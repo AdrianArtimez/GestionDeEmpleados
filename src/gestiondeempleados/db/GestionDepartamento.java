@@ -19,10 +19,9 @@ import java.util.logging.Logger;
  */
 public class GestionDepartamento {
     
-    GestionDB GDB = new GestionDB();
-    
-    Connection conn = GDB.getConexion();
-    
+    GestionDB GDB = new GestionDB("userdb","1234","localhost","empresa");
+    ManagerDepartamentos MD = new ManagerDepartamentos();
+        
     private void conectar() {
         GDB.conectar();
     }
@@ -43,11 +42,11 @@ public class GestionDepartamento {
 
             int dep = dept.getIdDepartamento();
             String name = dept.getNombre();
-
-            Statement sentence = conn.createStatement();
+            Statement sentence = GDB.conn.createStatement();
             String sql = String.format("INSERT INTO departamento VALUES (%s, '%s')", dep, name);
-            resultadoInsertar = sentence.execute(sql);
+            resultadoInsertar = sentence.execute(sql);           
             sentence.close();
+            MD.addDepartamento(dept);
             desconectar();
         } catch (SQLException ex) {
             Logger.getLogger(GestionDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -64,7 +63,7 @@ public class GestionDepartamento {
 
         //Enviar la modificacion a la base de datos
         try {
-            Statement sentence = conn.createStatement();
+            Statement sentence = GDB.conn.createStatement();
             String sql = String.format("UPDATE departamento set idDepartamento = ('%s') where idDepartamento = %s", newID, deptID);
             resultadoInsertar = sentence.execute(sql);
             sentence.close();
@@ -120,7 +119,7 @@ public class GestionDepartamento {
 
         //Enviar la modificacion a la base de datos
         try {
-            Statement sentence = conn.createStatement();
+            Statement sentence = GDB.conn.createStatement();
             String sql = String.format("SELECT idDepartamento,Nombre FROM departamento WHERE nombre='%s'",
                      deptName);
             sentence.execute(sql);
@@ -143,18 +142,16 @@ public class GestionDepartamento {
     
    public ManagerDepartamentos listarDepartamentos() {
         ManagerDepartamentos listado = new ManagerDepartamentos();
-        
+        ResultSet rs;
         //Conectar con la base de datos
         conectar();
-        Departamento dept_res = null;
-        ResultSet rs;
 
         //Enviar la modificacion a la base de datos
         try {
             //Creamos la sentencia
-            Statement sentence = conn.createStatement();
+            Statement sentence = GDB.conn.createStatement();
             // Y la syntax de la sentencia
-            String sql = "SELECT idDepartamento,Nombre FROM departamento";
+            String sql = "SELECT * FROM departamento";
             //Ejecutar la consulta
             sentence.execute(sql);
             //Obtengo el resultset
