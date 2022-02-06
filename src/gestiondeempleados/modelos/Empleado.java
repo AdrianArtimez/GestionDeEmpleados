@@ -4,6 +4,8 @@
  */
 package gestiondeempleados.modelos;
 
+import java.net.InetAddress;
+
 /**
  *
  * @author adria
@@ -15,6 +17,7 @@ public class Empleado {
     private Departamento depto;
     private float salario;
     private String email;
+    
 
     public Empleado() {
         this.idEmpleado = 0;
@@ -25,11 +28,11 @@ public class Empleado {
         this.email = "";
     }
     
-    public Empleado(int idEmpleado, String nombre, String apellidos, Departamento depto, float salario, String email) {
+    public Empleado(int idEmpleado, String nombre, String apellidos, Departamento dept, float salario, String email) {
         this.idEmpleado = idEmpleado;
         this.nombre = nombre;
         this.apellidos = apellidos;
-        this.depto = depto;
+        this.depto = dept;
         this.salario = salario;
         this.email = email;
     }
@@ -81,5 +84,11 @@ public class Empleado {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "Empleado{" + "idEmpleado=" + idEmpleado + ", nombre=" + nombre + ", apellidos=" + apellidos + ", depto=" + depto + ", salario=" + salario + ", email=" + email + '}';
+    }
  
+    
 }

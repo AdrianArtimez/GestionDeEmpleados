@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package gestiondeempleados;
+package gestiondeempleados.logica;
 
 import gestiondeempleados.modelos.Departamento;
+import gestiondeempleados.modelos.Empleado;
 import java.util.ArrayList;
 
 /**
@@ -19,12 +20,16 @@ public class ManagerDepartamentos {
         listaDept = new ArrayList<Departamento>();       
     }
     
-    public boolean addDepartamento(Departamento dept) {       
+    public boolean add(Departamento dept) {       
         return listaDept.add(dept);
     }
     
-    public boolean removeDepartamento(Departamento dept) {
+    public boolean remove(Departamento dept) {
         return listaDept.remove(dept);
+    }
+    
+    public Departamento get(int pos) {
+        return listaDept.get(pos);
     }
     
     /**
@@ -32,7 +37,7 @@ public class ManagerDepartamentos {
      * @param nombre
      * @return Departamento if found. if not return a null dept.
      */
-    public Departamento buscarDeparatamento(String nombre) {
+    public Departamento buscar(String nombre) {
         
         Departamento dept = null;
         
@@ -47,7 +52,7 @@ public class ManagerDepartamentos {
         return dept;
     }
     
-    public Departamento buscarDeparatamento(int id) {
+    public Departamento buscar(int id) {
         
         Departamento dept = null;
         
@@ -60,6 +65,12 @@ public class ManagerDepartamentos {
         }
         return dept;
     }
+
+    @Override
+    public String toString() {
+        return "ManagerDepartamentos" + "\nLista:\n" + listaDept;
+    }
+    
     
     
 }

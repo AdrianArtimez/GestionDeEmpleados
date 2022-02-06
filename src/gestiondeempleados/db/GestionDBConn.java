@@ -4,7 +4,7 @@
  */
 package gestiondeempleados.db;
 
-import gestiondeempleados.ManagerDepartamentos;
+import gestiondeempleados.logica.ManagerDepartamentos;
 import gestiondeempleados.modelos.Departamento;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,7 +18,12 @@ import java.util.logging.Logger;
  *
  * @author adria
  */
-public class GestionDB {
+public class GestionDBConn {
+
+    public static GestionDBConn getInstance() {
+        GestionDBConn GDB = new GestionDBConn("userdb","1234","localhost","empresa");
+        return GDB;
+    }
 
     private String user;
     private String password;
@@ -26,33 +31,35 @@ public class GestionDB {
     private String db;
     public Connection conn;
 
-    public GestionDB() {
+    public GestionDBConn() {
     }
 
-    public GestionDB(String user, String password, String host, String db) {
+    public GestionDBConn(String user, String password, String host, String db) {
         this.user = user;
         this.password = password;
         this.host = host;
         this.db = db;
     }
-
  
-    public void conectar() {
+    public boolean conectar() {
+        boolean resultado = true;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://" + host + "/empresa", user, password);
+             conn = DriverManager.getConnection("jdbc:mysql://" + host + "/empresa", user, password);
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(GestionDB.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Logger.getLogger(GestionDBConn.class.getName()).log(Level.SEVERE, null, ex);
+            resultado = false;
+        } return resultado;
     }
 
-    public void desconectar() {
+    public boolean desconectar() {
+        boolean resultado = true;
         try {
             conn.close();
         } catch (SQLException ex) {
-            Logger.getLogger(GestionDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GestionDBConn.class.getName()).log(Level.SEVERE, null, ex);
 
-        }
+        } return resultado;
     }
     
     public Connection getConexion() {
